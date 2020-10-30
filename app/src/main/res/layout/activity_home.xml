@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <import type="androidx.databinding.ObservableArrayList" />
+        <import type="com.example.whattodotomorrow.Todo" />
+        <variable
+            name="todoList"
+            type="ObservableArrayList&lt;Todo&gt;" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CEDDBD8E">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="오늘 뭐하지?"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_tomorrow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFDDBD8E"
+            android:text="내일은?"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            bind:item="@{todoList}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
