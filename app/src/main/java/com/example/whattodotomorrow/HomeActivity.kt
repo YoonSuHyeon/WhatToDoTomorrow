@@ -33,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
 
         val r = Runnable {
             // 데이터에 읽고 쓸때는 쓰레드 사용
+
             val temp =todoDatabase?.todoDao()?.getAll()
             temp?.forEach { todoList.add(Todo(it.time!!,it.content!!)) }
         }
