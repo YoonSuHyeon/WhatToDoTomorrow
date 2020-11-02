@@ -13,6 +13,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private var todoDatabase: TodoDatabase? = null
     private var readList: List<TodoEntitiy>? = null
+    private var presentList:ArrayList<TodoEntitiy> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             val currentTime = Calendar.getInstance().time
             val currentText =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentTime)
+
+
             if (et_content1.text.toString() != "") {
                 val tempList = checkedParse(et_content1.text.toString())
                 if (tempList.size != 2) {
@@ -34,32 +37,133 @@ class MainActivity : AppCompatActivity() {
 
                     //DB 저장
                     Log.d("local date", Calendar.getInstance().time.toString())
-                    addDb(
-                        TodoEntitiy(
-                            null,
-                            currentText + "/" + tempList[0],
-                            tempList[1]
-                        )
-                    ) //날짜와  내용 저장
-                    Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT).show()
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
                 }
-            } else if (et_content2.text.toString() != "") {
-                val tempList = checkedParse(et_content1.text.toString())
+            }
+            if (et_content2.text.toString() != "") {
+                val tempList = checkedParse(et_content2.text.toString())
                 if (tempList.size != 2) {
                     Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
                 } else {
-                    //알람등록후 DB에 저장
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
+                }
+            }
+            if (et_content3.text.toString() != "") {
+                val tempList = checkedParse(et_content3.text.toString())
+                if (tempList.size != 2) {
+                    Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
+                }
+            }
+            if (et_content4.text.toString() != "") {
+                val tempList = checkedParse(et_content4.text.toString())
+                if (tempList.size != 2) {
+                    Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
+                }
+            }
+             if (et_content5.text.toString() != "") {
+                val tempList = checkedParse(et_content5.text.toString())
+                if (tempList.size != 2) {
+                    Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
+                }
+            }
+             if (et_content6.text.toString() != "") {
+                val tempList = checkedParse(et_content6.text.toString())
+                if (tempList.size != 2) {
+                    Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
+                }
+            }
+            if (et_content7.text.toString() != "") {
+                val tempList = checkedParse(et_content7.text.toString())
+                if (tempList.size != 2) {
+                    Toast.makeText(this, "올바른 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    //알람등록
+
+                    //DB 저장
+                    Log.d("local date", Calendar.getInstance().time.toString())
+                    presentList.add(TodoEntitiy(
+                        null,
+                        currentText + "/" + tempList[0],
+                        tempList[1]
+                    ))
                 }
             }
 
+
+
+            addDb(presentList)
         }
 
     }
 
 
-    private fun addDb(todo: TodoEntitiy) {
+    private fun addDb(todo: ArrayList<TodoEntitiy>) {
         val addRunnable = Runnable {
-            todoDatabase?.todoDao()?.insertTodo(todo)
+            //넣기전에 존재하는것은 제거
+            for(todoItem in todo){
+                if(readList !=null ){
+                    if(readList!!.find {read-> todoItem.time==read.time&& todoItem.content==read.content} == null){
+                        Log.d("중복된것이 없어서 넣음 ","ㅎㅎ");
+                        todoDatabase?.todoDao()?.insertTodo(todoItem)
+                    }
+                    Log.d("중복된것이 생김 ","ㅎㅎ");
+                }else{
+                    todoDatabase?.todoDao()?.insertTodo(todoItem)
+                }
+            }
+
         }
         val addThread = Thread(addRunnable)
         addThread.start()

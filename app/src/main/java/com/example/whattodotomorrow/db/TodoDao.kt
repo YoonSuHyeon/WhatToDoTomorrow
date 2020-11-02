@@ -14,6 +14,7 @@ interface TodoDao {
     @Query("DELETE  FROM todo ")
     fun deleteAll()
 
+
     @Insert
     fun insertTodo( todo: TodoEntitiy)
     @Delete
