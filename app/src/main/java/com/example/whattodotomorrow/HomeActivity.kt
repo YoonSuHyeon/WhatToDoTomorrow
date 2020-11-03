@@ -77,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
             temp?.forEach {
                 Log.d("databaseText",it.time!!)
 
-                if (it.time == beforeText) {
+                if (it.time!!.split("/")[0] == beforeText) {
                     todoList.add(Todo(it.time!!, it.content!!))
                 }
             }
