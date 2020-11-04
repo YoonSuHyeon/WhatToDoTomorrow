@@ -163,10 +163,14 @@ class MainActivity : AppCompatActivity() {
                     todoDatabase?.todoDao()?.insertTodo(todoItem)
                 }
             }
+            runOnUiThread {
+                Toast.makeText(this,"저장",Toast.LENGTH_SHORT).show()
+            }
 
         }
         val addThread = Thread(addRunnable)
         addThread.start()
+
     }
 
     private fun checkedParse(s: String): List<String> {
