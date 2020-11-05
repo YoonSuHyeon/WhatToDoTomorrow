@@ -21,6 +21,8 @@
             android:windowSoftInputMode="adjustPan">
 
         </activity>
+        <receiver android:name=".alarm.AlarmReceiver"
+            android:exported="false"/>
     </application>
 
 </manifest>

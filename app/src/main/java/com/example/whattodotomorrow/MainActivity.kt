@@ -1,9 +1,14 @@
 package com.example.whattodotomorrow
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
+import com.example.whattodotomorrow.alarm.AlarmReceiver
 import com.example.whattodotomorrow.db.TodoDatabase
 import com.example.whattodotomorrow.db.TodoEntitiy
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,11 +19,25 @@ class MainActivity : AppCompatActivity() {
     private var todoDatabase: TodoDatabase? = null
     private var readList: List<TodoEntitiy>? = null
     private var presentList:ArrayList<TodoEntitiy> = ArrayList()
+    private lateinit var alarmManager :AlarmManager
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         todoDatabase = TodoDatabase.getInstance(this)
         readDate()
+
+        //알람
+        alarmManager=getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)  // 1
+        val pendingIntent = PendingIntent.getBroadcast(     // 2
+            this, AlarmReceiver.NOTIFICATION_ID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+
 
 
 
@@ -143,13 +162,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            addDb(presentList)
+            addDb(presentList,pendingIntent)
         }
 
     }
 
 
-    private fun addDb(todo: ArrayList<TodoEntitiy>) {
+    private fun addDb(todo: ArrayList<TodoEntitiy>,pendingIntent: PendingIntent) {
         val addRunnable = Runnable {
             //넣기전에 존재하는것은 제거
             for(todoItem in todo){
@@ -157,6 +176,31 @@ class MainActivity : AppCompatActivity() {
                     if(readList!!.find {read-> todoItem.time==read.time&& todoItem.content==read.content} == null){
                         Log.d("중복된것이 없어서 넣음 ","ㅎㅎ");
                         todoDatabase?.todoDao()?.insertTodo(todoItem)
+                        //알람도 추가
+                       val currentTime = Calendar.getInstance().time
+
+                        val cal = GregorianCalendar(Locale.KOREA)
+                        cal.time = currentTime
+                       // cal.add(Calendar.DATE, 1)
+                        cal.set(Calendar.HOUR_OF_DAY,12)
+                        cal.set(Calendar.MINUTE,36)
+                        alarmManager.setExact(
+                            AlarmManager.RTC_WAKEUP,
+                            cal.timeInMillis,
+                            pendingIntent
+                            )
+
+
+                        /* 1분후에 울리게하는 알람
+                        val triggerTime = (SystemClock.elapsedRealtime()  // 4
+                                + 60 * 1000)
+                        alarmManager.set(   // 5
+                            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            triggerTime,
+                            pendingIntent
+                        )*/
+
+                        Log.d("알람설정 12:5 ","ㅎㅎ");
                     }
                     Log.d("중복된것이 생김 ","ㅎㅎ");
                 }else{
