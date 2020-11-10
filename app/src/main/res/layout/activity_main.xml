@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center|left"
-        android:text="최대 7개의 알림 설정이 가능합니다.\n예)08:00 일어나기"
+        android:text="최대 7개의 알림 설정이 가능합니다.\n예)08:00/기상"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -17,8 +17,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
     companion object {
         const val TAG = "AlarmReceiver"
-        const val NOTIFICATION_ID = 0
-        const val PRIMARY_CHANNEL_ID = "primary_notification_channel"
     }
 
     lateinit var notificationManager: NotificationManager
@@ -27,36 +25,38 @@ class AlarmReceiver : BroadcastReceiver() {
         Log.d(TAG, "Received intent : $intent")
         notificationManager = context.getSystemService(
             Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        createNotificationChannel()
-        deliverNotification(context)
+        val content =intent.getStringExtra("content")
+        val privateId=intent.getIntExtra("privateId",0)
+        Log.d("onReceive" , content + privateId)
+        createNotificationChannel(privateId.toString())
+        deliverNotification(context,content!!,privateId)
     }
 
-    private fun deliverNotification(context: Context) {
+    private fun deliverNotification(context: Context,content:String,privateId:Int) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
-            NOTIFICATION_ID,
+            privateId,
             contentIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val builder =
-            NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
+            NotificationCompat.Builder(context, privateId.toString())
               .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle("Alert")
-                .setContentText("This is repeating alarm")
+                .setContentText(content)
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        notificationManager.notify(privateId, builder.build())
     }
 
-    fun createNotificationChannel() {
+    fun createNotificationChannel(channelId:String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
-                PRIMARY_CHANNEL_ID,
+                channelId,
                 "Stand up notification",
                 NotificationManager.IMPORTANCE_HIGH
             )
