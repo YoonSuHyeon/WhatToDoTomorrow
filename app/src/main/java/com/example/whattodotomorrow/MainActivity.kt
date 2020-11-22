@@ -171,6 +171,7 @@ class MainActivity : AppCompatActivity() {
 
 
             addDb(presentList)
+            onBackPressed()
         }
 
     }
@@ -208,6 +209,12 @@ class MainActivity : AppCompatActivity() {
 
                         val cal = GregorianCalendar(Locale.KOREA)
                         cal.time = currentTime
+
+
+                        /**
+                         * Test 할때는 cal.add(Calendar.DATE .. ) 을 주석 처리해서 사용 ..
+                         * **/
+                        //일을하나 추가시킨다.
                         cal.add(Calendar.DATE, 1)
                         cal.set(Calendar.HOUR_OF_DAY, time[0])
                         cal.set(Calendar.MINUTE, time[1])

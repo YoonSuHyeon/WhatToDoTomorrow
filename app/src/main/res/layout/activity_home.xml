@@ -15,6 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         android:background="#CEDDBD8E">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -26,7 +27,7 @@
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.15"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,8 +43,22 @@
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_list" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_list"
+            />
 
+        <Button
+            android:id="@+id/btn_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFDDBD8E"
+            android:layout_marginTop="1dp"
+            android:text="지금까지.."
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_tomorrow"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"

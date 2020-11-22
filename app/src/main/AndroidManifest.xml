@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".HistoryActivity"></activity>
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,11 +19,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"></activity>
 
-        </activity>
-        <receiver android:name=".alarm.AlarmReceiver"
-            android:exported="false"/>
+        <receiver
+            android:name=".alarm.AlarmReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

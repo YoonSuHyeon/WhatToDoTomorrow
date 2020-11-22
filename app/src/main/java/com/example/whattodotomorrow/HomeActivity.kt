@@ -40,6 +40,11 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+        btn_history.setOnClickListener {
+            val intnet = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
+
+        }
     }
 
 

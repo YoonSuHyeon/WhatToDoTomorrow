@@ -43,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder =
             NotificationCompat.Builder(context, privateId.toString())
               .setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle("Alert")
+                .setContentTitle("해야 할일 !")
                 .setContentText(content)
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
