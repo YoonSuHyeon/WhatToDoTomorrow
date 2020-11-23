@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableArrayList
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.whattodotomorrow.databinding.ActivityHomeBinding
@@ -29,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_home)
         todoAdapter = TodoAdapter()
         todoList = ObservableArrayList()
+        rv_list.addItemDecoration(DividerItemDecoration(this,1))
         binding.rvList.adapter = todoAdapter
         binding.todoList = todoList
 
@@ -41,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         btn_history.setOnClickListener {
-            val intnet = Intent(this, HistoryActivity::class.java)
+            val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
 
         }
@@ -88,6 +90,11 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
 
+            //size == 0 일때
+            if(todoList.size==0){
+                todoList.add(Todo("시간1","내용1"))
+                todoList.add(Todo("시간2","내용2"))
+            }
 
         }
 

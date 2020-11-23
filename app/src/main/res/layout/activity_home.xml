@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:background="#CEDDBD8E">
+        android:background="#DDBD8E">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
@@ -37,7 +37,7 @@
             android:id="@+id/btn_tomorrow"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#FFDDBD8E"
+            android:background="#CEDDBD8E"
             android:text="내일은?"
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent="0.05"
@@ -50,7 +50,7 @@
             android:id="@+id/btn_history"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#FFDDBD8E"
+            android:background="#CEDDBD8E"
             android:layout_marginTop="1dp"
             android:text="지금까지.."
             app:layout_constraintHeight_default="percent"
@@ -64,7 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             bind:item="@{todoList}"
+
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent="0.75"
             app:layout_constraintLeft_toLeftOf="parent"

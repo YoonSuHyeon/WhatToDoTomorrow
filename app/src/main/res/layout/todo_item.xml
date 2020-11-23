@@ -8,21 +8,33 @@
     </data>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="60dp"
+        android:weightSum="1"
+        android:orientation="horizontal">
 
+        <ImageView
+
+            android:src="@drawable/image1"
+            android:adjustViewBounds="true"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"/>
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
             android:text="@{todo.time}">
 
         </TextView>
 
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"
             android:text="@{todo.content}">
 
         </TextView>
