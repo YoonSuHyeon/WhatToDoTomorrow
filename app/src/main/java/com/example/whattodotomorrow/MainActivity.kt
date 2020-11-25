@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
 
-
-
-
-
         btn_set.setOnClickListener {
             val currentTime = Calendar.getInstance().time
             val currentText =

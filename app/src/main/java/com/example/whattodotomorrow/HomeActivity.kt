@@ -30,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_home)
         todoAdapter = TodoAdapter()
         todoList = ObservableArrayList()
-        rv_list.addItemDecoration(DividerItemDecoration(this,1))
+        rv_list.addItemDecoration(DividerItemDecoration(this, 1))
         binding.rvList.adapter = todoAdapter
         binding.todoList = todoList
 
@@ -80,10 +80,10 @@ class HomeActivity : AppCompatActivity() {
 
             val beforeText =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
-            Log.d("beforeText",beforeText)
+            Log.d("beforeText", beforeText)
 
             temp?.forEach {
-                Log.d("databaseText",it.time!!)
+                Log.d("databaseText", it.time!!)
 
                 if (it.time!!.split("/")[0] == beforeText) {
                     todoList.add(Todo(it.time!!, it.content!!))
@@ -91,9 +91,9 @@ class HomeActivity : AppCompatActivity() {
             }
 
             //size == 0 일때
-            if(todoList.size==0){
-                todoList.add(Todo("시간1","내용1"))
-                todoList.add(Todo("시간2","내용2"))
+            if (todoList.size == 0) {
+                todoList.add(Todo("시간1", "내용1"))
+                todoList.add(Todo("시간2", "내용2"))
             }
 
         }
