@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import com.example.whattodotomorrow.alarm.AlarmReceiver
 import com.example.whattodotomorrow.db.TodoDatabase
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var readList: List<TodoEntitiy>? = null
     private var presentList: ArrayList<TodoEntitiy> = ArrayList()
     private lateinit var alarmManager: AlarmManager
-
+    private var editTextArr:Array<EditText>?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +32,22 @@ class MainActivity : AppCompatActivity() {
         //알람
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
+        editTextArr=arrayOf(et_content1,et_content2,et_content3,et_content4,et_content5,et_content6,et_content7)
 
 
         btn_date.setOnClickListener {
-            val timePickerFragment=TimePickerFragment()
-            timePickerFragment.show(supportFragmentManager,"gg")
-            val getdata = timePickerFragment.getdata()
-            Log.d("data",getdata)
+            val cal =Calendar.getInstance()
+            TimePickerDialog(this,android.R.style.Theme_Holo_Dialog,TimePickerDialog.OnTimeSetListener { timePicker, h, m ->
+
+                val findEditText:EditText? =findEmptyEditText()
+                if(findEditText==null){
+                    Toast.makeText(this,"비어있는 줄이 없습니다.",Toast.LENGTH_SHORT).show()
+                }else{
+                    val temp ="$h:$m/"
+                    findEditText.setText(temp)
+                }
+
+            },cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true).show()
         }
 
         btn_set.setOnClickListener {
@@ -179,6 +189,10 @@ class MainActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+    }
+
+    private fun findEmptyEditText(): EditText? {
+        return  editTextArr!!.find { it.text.toString() == "" }
     }
 
     private fun makePendingIntent(privateId: Int?, content: String?): PendingIntent {
