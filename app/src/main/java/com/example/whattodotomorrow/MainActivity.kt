@@ -2,6 +2,7 @@ package com.example.whattodotomorrow
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,6 +31,14 @@ class MainActivity : AppCompatActivity() {
         //알람
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
+
+
+        btn_date.setOnClickListener {
+            val timePickerFragment=TimePickerFragment()
+            timePickerFragment.show(supportFragmentManager,"gg")
+            val getdata = timePickerFragment.getdata()
+            Log.d("data",getdata)
+        }
 
         btn_set.setOnClickListener {
             val currentTime = Calendar.getInstance().time
