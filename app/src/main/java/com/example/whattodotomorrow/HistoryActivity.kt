@@ -2,7 +2,9 @@ package com.example.whattodotomorrow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
+import com.example.whattodotomorrow.db.TodoDatabase
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
@@ -10,6 +12,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.android.synthetic.main.activity_history.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * DB에 있는 것을 가져와서 Content를 순위를 매겨서 보여준다 .
@@ -18,19 +23,14 @@ import kotlinx.android.synthetic.main.activity_history.*
  *
  * */
 class HistoryActivity : AppCompatActivity() {
+
+    private var todoDatabase: TodoDatabase? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
 
-        val entries = ArrayList<BarEntry>()
-        entries.add(BarEntry(1f, 1.0f))
-        entries.add(BarEntry(2f, 2.0f))
-        entries.add(BarEntry(3f, 3.0f))
-        entries.add(BarEntry(4f, 4.0f))
-        entries.add(BarEntry(5f, 5.0f))
-        entries.add(BarEntry(6f, 6.0f))
-        entries.add(BarEntry(7f, 7.0f))
+
 
 
 
@@ -70,18 +70,7 @@ class HistoryActivity : AppCompatActivity() {
         }
 
 
-        var set = BarDataSet(entries, "DataSet")//데이터셋 초기화 하기
-        set.color = ContextCompat.getColor(this, R.color.colorPrimary)
 
-        val dataSet: ArrayList<IBarDataSet> = ArrayList()
-        dataSet.add(set)
-        val data = BarData(dataSet)
-        data.barWidth = 0.3f//막대 너비 설정하기
-        barChart.run {
-            this.data = data //차트의 데이터를 data로 설정해줌.
-            setFitBars(true)
-            invalidate()
-        }
 
 
         //dataset.setColor(ColorTemplate.COLORFUL_COLORS)
@@ -90,9 +79,86 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     inner class MyXAxisFormatter : ValueFormatter() {
-        private val days = arrayOf("월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일")
+        private val days = arrayOf("일요일","월요일", "화요일", "수요일", "목요일", "금요일", "토요일")
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             return days.getOrNull(value.toInt() - 1) ?: value.toString()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        todoDatabase = TodoDatabase.getInstance(this)
+        val r = Runnable {
+            // 데이터에 읽고 쓸때는 쓰레드 사용
+
+            var sunTemp=2f
+            var monTemp=4f
+            var tueemp=5f
+            var wesTemp=6f
+            var thuTemp=8f
+            var friTemp=9f
+            var satTemp=1f
+            val temp = todoDatabase?.todoDao()?.getAll()
+
+            //현재 날짜를 가져와서 전날 등록한 것들만 리스트에 등록한다.
+
+            val currentTime = Calendar.getInstance().time
+
+            val cal = GregorianCalendar(Locale.KOREA)
+            cal.time = currentTime
+
+            /*이번주월요일
+            cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+            Log.d("cal",cal.get(Calendar.YEAR).toString())
+            Log.d("cal",cal.get(Calendar.MONTH).toString())
+            Log.d("cal",cal.get(Calendar.DATE).toString())
+*/
+
+            cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+            Log.d("cal",cal.get(Calendar.YEAR).toString())
+            Log.d("cal",cal.get(Calendar.MONTH).toString())
+            Log.d("cal",cal.get(Calendar.DATE).toString())
+
+            Log.d("cal",cal.get(Calendar.WEEK_OF_YEAR).toString())
+            Log.d("cal",cal.get(Calendar.DAY_OF_WEEK).toString())
+            Log.d("cal",cal.get(Calendar.DAY_OF_WEEK_IN_MONTH).toString())
+            val beforeText =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
+
+            //현재 주에 일요일 부터 금요일 까지 등록된것을 DB에서 검색한후 값을 넣어준다.
+
+
+
+
+
+            runOnUiThread {
+                val entries = ArrayList<BarEntry>()
+                entries.add(BarEntry(1f, sunTemp))
+                entries.add(BarEntry(2f, monTemp))
+                entries.add(BarEntry(3f, tueemp))
+                entries.add(BarEntry(4f, wesTemp))
+                entries.add(BarEntry(5f, thuTemp))
+                entries.add(BarEntry(6f, friTemp))
+                entries.add(BarEntry(7f, satTemp))
+
+
+                var set = BarDataSet(entries, "DataSet")//데이터셋 초기화 하기
+                set.color = ContextCompat.getColor(this, R.color.colorPrimary)
+
+                val dataSet: ArrayList<IBarDataSet> = ArrayList()
+                dataSet.add(set)
+                val data = BarData(dataSet)
+                data.barWidth = 0.3f//막대 너비 설정하기
+                barChart.run {
+                    this.data = data //차트의 데이터를 data로 설정해줌.
+                    setFitBars(true)
+                    invalidate()
+                }
+
+            }
+        }
+
+        val thread = Thread(r)
+        thread.start()
     }
 }

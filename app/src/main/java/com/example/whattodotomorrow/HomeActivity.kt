@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         binding.rvList.adapter = todoAdapter
         binding.todoList = todoList
 
-
+      //  testData()
 
 
 
@@ -101,4 +101,33 @@ class HomeActivity : AppCompatActivity() {
         val thread = Thread(r)
         thread.start()
     }
+
+    fun testData(){
+        val td = Runnable {
+            // 데이터에 읽고 쓸때는 쓰레드 사용
+            todoDatabase = TodoDatabase.getInstance(this)
+
+            for (i in 1..7) {
+                val currentTemp = Calendar.getInstance().time
+
+                val calTemp = GregorianCalendar(Locale.KOREA)
+                calTemp.time = currentTemp
+                val amount = -i
+                calTemp.add(Calendar.DATE, amount)
+                val beforeTextTemp =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calTemp.time)
+                val tempTime = "$beforeTextTemp/09:00"
+                todoDatabase?.todoDao()?.insertTodo(TodoEntitiy(null, tempTime, "TEST"))
+                val tempTime2 = "$beforeTextTemp/10:00"
+                todoDatabase?.todoDao()?.insertTodo(TodoEntitiy(null, tempTime2, "TEST2"))
+
+            }
+
+
+        }
+
+        val thread = Thread(td)
+        thread.start()
+    }
+
 }
