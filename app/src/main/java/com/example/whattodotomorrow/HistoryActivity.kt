@@ -3,6 +3,10 @@ package com.example.whattodotomorrow
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.whattodotomorrow.db.TodoDatabase
 import com.github.mikephil.charting.components.AxisBase
@@ -22,16 +26,12 @@ import kotlin.collections.ArrayList
  *
  *
  * */
-class HistoryActivity : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
 
     private var todoDatabase: TodoDatabase? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
-
-
-
-
 
 
         barChart.run {
@@ -73,6 +73,9 @@ class HistoryActivity : AppCompatActivity() {
 
 
 
+        spline.onItemSelectedListener= this
+
+
         //dataset.setColor(ColorTemplate.COLORFUL_COLORS)
 
 
@@ -88,16 +91,23 @@ class HistoryActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         todoDatabase = TodoDatabase.getInstance(this)
+
+    }
+
+
+
+    fun dataChanged(tempCount:Int){
         val r = Runnable {
             // 데이터에 읽고 쓸때는 쓰레드 사용
+            var arrDay= arrayOf(0f,0f,0f,0f,0f,0f,0f)
+            /*var sunTemp=0f
+            var monTemp=0f
+            var tueemp=0f
+            var wesTemp=0f
+            var thuTemp=0f
+            var friTemp=0f
+            var satTemp=0f*/
 
-            var sunTemp=2f
-            var monTemp=4f
-            var tueemp=5f
-            var wesTemp=6f
-            var thuTemp=8f
-            var friTemp=9f
-            var satTemp=1f
             val temp = todoDatabase?.todoDao()?.getAll()
 
             //현재 날짜를 가져와서 전날 등록한 것들만 리스트에 등록한다.
@@ -107,39 +117,48 @@ class HistoryActivity : AppCompatActivity() {
             val cal = GregorianCalendar(Locale.KOREA)
             cal.time = currentTime
 
-            /*이번주월요일
-            cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+            //이번주일요일
+            cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+            cal.add(Calendar.DATE,-tempCount*7)
             Log.d("cal",cal.get(Calendar.YEAR).toString())
             Log.d("cal",cal.get(Calendar.MONTH).toString())
             Log.d("cal",cal.get(Calendar.DATE).toString())
-*/
 
+
+            /*//이번주토요일
             cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
             Log.d("cal",cal.get(Calendar.YEAR).toString())
             Log.d("cal",cal.get(Calendar.MONTH).toString())
-            Log.d("cal",cal.get(Calendar.DATE).toString())
-
-            Log.d("cal",cal.get(Calendar.WEEK_OF_YEAR).toString())
-            Log.d("cal",cal.get(Calendar.DAY_OF_WEEK).toString())
-            Log.d("cal",cal.get(Calendar.DAY_OF_WEEK_IN_MONTH).toString())
-            val beforeText =
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
-
-            //현재 주에 일요일 부터 금요일 까지 등록된것을 DB에서 검색한후 값을 넣어준다.
+            Log.d("cal",cal.get(Calendar.DATE).toString())*/
 
 
+            for(j in 0..6){
+                val beforeText =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.time)
+                Log.d("forj","$beforeText + $j")
+                var count=0
+                temp?.forEach {
+                    Log.d("HistoryText", it.time!!)
+
+                    if (it.time!!.split("/")[0] == beforeText) {
+                        count++
+                    }
+                }
+                arrDay[j]=count.toFloat()
+                cal.add(Calendar.DATE, 1)
+            }
 
 
 
             runOnUiThread {
                 val entries = ArrayList<BarEntry>()
-                entries.add(BarEntry(1f, sunTemp))
-                entries.add(BarEntry(2f, monTemp))
-                entries.add(BarEntry(3f, tueemp))
-                entries.add(BarEntry(4f, wesTemp))
-                entries.add(BarEntry(5f, thuTemp))
-                entries.add(BarEntry(6f, friTemp))
-                entries.add(BarEntry(7f, satTemp))
+                entries.add(BarEntry(1f, arrDay[0]))
+                entries.add(BarEntry(2f, arrDay[1]))
+                entries.add(BarEntry(3f, arrDay[2]))
+                entries.add(BarEntry(4f, arrDay[3]))
+                entries.add(BarEntry(5f, arrDay[4]))
+                entries.add(BarEntry(6f, arrDay[5]))
+                entries.add(BarEntry(7f, arrDay[6]))
 
 
                 var set = BarDataSet(entries, "DataSet")//데이터셋 초기화 하기
@@ -160,5 +179,25 @@ class HistoryActivity : AppCompatActivity() {
 
         val thread = Thread(r)
         thread.start()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        when (position){
+            0->{ //이번주
+                dataChanged(0)
+            }
+            1->{ //저번주
+                dataChanged(1)
+            }
+            2->{// 2주전
+                dataChanged(2)
+            }
+        }
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }

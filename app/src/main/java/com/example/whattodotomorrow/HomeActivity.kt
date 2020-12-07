@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         binding.rvList.adapter = todoAdapter
         binding.todoList = todoList
 
-      //  testData()
+       //testData()
 
 
 
