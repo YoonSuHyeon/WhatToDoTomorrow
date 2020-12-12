@@ -111,7 +111,7 @@ class HomeActivity : AppCompatActivity() {
 
                 val calTemp = GregorianCalendar(Locale.KOREA)
                 calTemp.time = currentTemp
-                val amount = -i
+                val amount = -i *7
                 calTemp.add(Calendar.DATE, amount)
                 val beforeTextTemp =
                     SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calTemp.time)
