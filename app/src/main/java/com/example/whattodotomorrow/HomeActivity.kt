@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         binding.rvList.adapter = todoAdapter
         binding.todoList = todoList
 
-       //testData()
+       testData()
 
 
 
@@ -89,7 +89,6 @@ class HomeActivity : AppCompatActivity() {
                     todoList.add(Todo(it.time!!, it.content!!))
                 }
             }
-
             //size == 0 일때
             if (todoList.size == 0) {
                 todoList.add(Todo("시간1", "내용1"))

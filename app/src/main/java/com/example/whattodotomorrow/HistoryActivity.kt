@@ -108,6 +108,12 @@ class HistoryActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener 
             var friTemp=0f
             var satTemp=0f*/
 
+            /*//이번주토요일
+            cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+            Log.d("cal",cal.get(Calendar.YEAR).toString())
+            Log.d("cal",cal.get(Calendar.MONTH).toString())
+            Log.d("cal",cal.get(Calendar.DATE).toString())*/
+
             val temp = todoDatabase?.todoDao()?.getAll()
 
             //현재 날짜를 가져와서 전날 등록한 것들만 리스트에 등록한다.
@@ -120,16 +126,7 @@ class HistoryActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener 
             //이번주일요일
             cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
             cal.add(Calendar.DATE,-tempCount*7)
-            Log.d("cal",cal.get(Calendar.YEAR).toString())
-            Log.d("cal",cal.get(Calendar.MONTH).toString())
-            Log.d("cal",cal.get(Calendar.DATE).toString())
 
-
-            /*//이번주토요일
-            cal.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-            Log.d("cal",cal.get(Calendar.YEAR).toString())
-            Log.d("cal",cal.get(Calendar.MONTH).toString())
-            Log.d("cal",cal.get(Calendar.DATE).toString())*/
 
 
             for(j in 0..6){
